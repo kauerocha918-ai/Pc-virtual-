@@ -15,7 +15,7 @@ jobs:
         Invoke-WebRequest https://pkgs.tailscale.com/stable/tailscale-setup-latest.exe -OutFile ts.exe
         .\ts.exe /S
         Start-Sleep 20
-        & "$env:ProgramFiles\Tailscale\tailscale.exe" up --authkey=${{ secrets.TAILSCALE_AUTHKEY }} --hostname=rdp-pc --unattended
+        & "$env:ProgramFiles\Tailscale\tailscale.exe" up --authkey="${{ secrets.TAILSCALE_AUTHKEY }}" --hostname=rdp-pc --unattended
     - name: Rodar
       run: |
         Write-Host "Login: runneradmin Senha: Kaue@123"
