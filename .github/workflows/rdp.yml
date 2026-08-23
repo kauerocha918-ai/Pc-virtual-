@@ -1,0 +1,22 @@
+name: RDP
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 360
+    steps:
+    - name: Ativar RDP
+      run: |
+        Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -name "fDenyTSConnections" -value 0
+        Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
+        Set-LocalUser -Name "runneradmin" -Password (ConvertTo-SecureString -AsPlainText "Kaue@123" -Force)
+    - name: Tailscale
+      run: |
+        Invoke-WebRequest https://pkgs.tailscale.com/stable/tailscale-setup-latest.exe -OutFile ts.exe
+        .\ts.exe /S
+        Start-Sleep 10
+        & "$env:ProgramFiles\Tailscale\tailscale.exe" up --authkey tskey-auth-kM8h9aJCNTRL-XbC1c5g2F9vQwErT3pLmN4oP6q --hostname rdp-pc
+    - name: Rodar
+      run: |
+        Write-Host "Login: runneradmin Senha: Kaue@123"
+        while($true){ Start-Sleep 300 }
